@@ -11,7 +11,7 @@ threading.Thread(target=run_web, daemon=True).start()
 
 import requests, time, datetime
 
-TELEGRAM_TOKEN = "8208963649:AAGkCQxXoo0fVbVSzcgNS0XVXSqdEYiI9ls"
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = 8935278631  # your ID - you already found it
 
 print("Tye V4.4 TRIPLE PAIR - LIVE")
