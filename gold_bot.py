@@ -61,9 +61,9 @@ while True:
         
         print(f"[{now}] XAU/USD ${gold:.2f} - {action}")
     if "WAIT" not in action:
-    msg = f"🚨 *TYE GOLD SIGNAL* 🔴\n\n💰 XAU/USD: ${gold:.2f}\n📍 Entry: ${gold:.2f}\n🛑 SL: ${sl:.2f}\n🎯 TP: ${tp:.2f}"
-    msg_id = send_telegram_with_id(msg)
-    active_trades["XAUUSD"] = {"action": action, "entry": gold, "sl": sl, "tp": tp}
+        msg = f"🚨 *TYE GOLD SIGNAL* 🔴\n\n💰 XAU/USD: ${gold:.2f}\n📍 Entry: ${gold:.2f}\n🛑 SL: ${sl:.2f}\n🎯 TP: ${tp:.2f}"
+        msg_id = send_telegram_with_id(msg)
+        active_trades["XAUUSD"] = {"action": action, "entry": gold, "sl": sl, "tp": tp}
 
     # 2. GBP/USD
     if gbp_usd:
