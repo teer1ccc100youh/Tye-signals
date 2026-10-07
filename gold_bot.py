@@ -60,9 +60,10 @@ while True:
         else: action, sl, tp = "WAIT 🟡", gold, gold
         
         print(f"[{now}] XAU/USD ${gold:.2f} - {action}")
-        if "WAIT" not in action:
-            msg = f"🚨 *TYE GOLD SIGNAL* 🔴\n\n💰 XAU/USD: ${gold:.2f}\n📊 Action: {action}\n🛑 SL: ${sl:.2f}\n🎯 TP: ${tp:.2f}\n⏰ {now} SAST\n\n_Tye V4.4_"
-            send_telegram(msg)
+    if "WAIT" not in action:
+    msg = f"🚨 *TYE GOLD SIGNAL* 🔴\n\n💰 XAU/USD: ${gold:.2f}\n📍 Entry: ${gold:.2f}\n🛑 SL: ${sl:.2f}\n🎯 TP: ${tp:.2f}"
+    msg_id = send_telegram_with_id(msg)
+    active_trades["XAUUSD"] = {"action": action, "entry": gold, "sl": sl, "tp": tp}
 
     # 2. GBP/USD
     if gbp_usd:
@@ -71,9 +72,10 @@ while True:
         else: action, sl, tp = "WAIT 🟡", gbp_usd, gbp_usd
         
         print(f"[{now}] GBP/USD {gbp_usd:.5f} - {action}")
-        if "WAIT" not in action:
-            msg = f"🚨 *TYE GBP/USD SIGNAL* \n\n💷 GBP/USD: {gbp_usd:.5f}\n📊 Action: {action}\n🛑 SL: {sl:.5f}\n🎯 TP: {tp:.5f}\n⏰ {now} SAST\n\n_Tye V4.4_"
-            send_telegram(msg)
+if "WAIT" not in action:
+    msg = f"🚨 *TYE GBP/USD SIGNAL* 🔴\n\n💰 GBP/USD: {gbp_usd:.5f}\n📍 Entry: {gbp_usd:.5f}\n🛑 SL: {sl:.5f}\n🎯 TP: {tp:.5f}"
+    msg_id = send_telegram_with_id(msg)
+    active_trades["GBPUSD"] = {"action": action, "entry": gbp_usd, "sl": sl, "tp": tp}
 
     # 3. GBP/JPY
     if gbp_jpy:
@@ -81,10 +83,10 @@ while True:
         elif gbp_jpy < 188: action, sl, tp = "BUY 🟢", gbp_jpy-0.50, gbp_jpy+1.00
         else: action, sl, tp = "WAIT 🟡", gbp_jpy, gbp_jpy
 
-        print(f"[{now}] GBP/JPY {gbp_jpy:.2f} - {action}")
         if "WAIT" not in action:
-            msg = f"🚨 *TYE GBP/JPY SIGNAL* \n\n💷 GBP/JPY: {gbp_jpy:.2f}\n📊 Action: {action}\n🛑 SL: {sl:.2f}\n🎯 TP: {tp:.2f}\n⏰ {now} SAST\n\n_Tye V4.4_"
-            send_telegram(msg)
+    msg = f"🚨 *TYE GBP/JPY SIGNAL* 🔴\n\n💰 GBP/JPY: {gbp_jpy:.2f}\n📍 Entry: {gbp_jpy:.2f}\n🛑 SL: {sl:.2f}\n🎯 TP: {tp:.2f}"
+    msg_id = send_telegram_with_id(msg)
+    active_trades["GBPJPY"] = {"action": action, "entry": gbp_jpy, "sl": sl, "tp": tp}
 
     time.sleep(900)
 
@@ -95,7 +97,7 @@ active_trades = {}
 def send_telegram_with_id(msg):
     try:
         url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-        data = {"chat_id": CHAT_ID, "text": msg, "parse_mode": "HTML"}
+        data = {"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"}
         r = requests.post(url, data=data, timeout=10)
         return r.json()['result']['message_id']
     except Exception as e:
