@@ -29,11 +29,12 @@ def get_gold():
             return None
 
 def get_forex():
-    # GBP based pairs
+    # GBP based pairs - FIXED
     try:
-        r = requests.get("https://api.frankfurter.app/latest?from=GBP", timeout=10).json()
-        gbp_usd = r['rates']['USD']
-        gbp_jpy = r['rates']['JPY']
+        r = requests.get("https://api.frankfurter.app/latest?from=GBP&to=USD,JPY")
+        data = r.json()
+        gbp_usd = data['rates']['USD']
+        gbp_jpy = data['rates']['JPY']
         return gbp_usd, gbp_jpy
     except:
         return None, None
