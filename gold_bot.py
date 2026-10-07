@@ -13,6 +13,15 @@ import requests, time, datetime
 
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = "@tyesignalsvip"  # your ID - you already found it
+def send_telegram_with_id(message):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": CHAT_ID,
+        "text": message,
+        "parse_mode": "Markdown"
+    }
+    response = requests.post(url, json=payload)
+    return response.json().get("result", {}).get("message_id")
 
 print("Tye V4.4 TRIPLE PAIR - LIVE")
 print("Pairs: XAU/USD, GBP/USD, GBP/JPY")
