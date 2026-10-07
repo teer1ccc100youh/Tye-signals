@@ -84,9 +84,9 @@ if "WAIT" not in action:
         else: action, sl, tp = "WAIT 🟡", gbp_jpy, gbp_jpy
 
         if "WAIT" not in action:
-    msg = f"🚨 *TYE GBP/JPY SIGNAL* 🔴\n\n💰 GBP/JPY: {gbp_jpy:.2f}\n📍 Entry: {gbp_jpy:.2f}\n🛑 SL: {sl:.2f}\n🎯 TP: {tp:.2f}"
-    msg_id = send_telegram_with_id(msg)
-    active_trades["GBPJPY"] = {"action": action, "entry": gbp_jpy, "sl": sl, "tp": tp}
+            msg = f"🚨 *TYE GBP/JPY SIGNAL* 🔴\n\n💰 GBP/JPY: {gbp_jpy:.2f}\n📍 Entry: {gbp_jpy:.2f}\n🛑 SL: {sl:.2f}\n🎯 TP: {tp:.2f}"
+            msg_id = send_telegram_with_id(msg)
+            active_trades["GBPJPY"] = {"action": action, "entry": gbp_jpy, "sl": sl, "tp": tp}
 
     time.sleep(900)
 
