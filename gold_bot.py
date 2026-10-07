@@ -22,7 +22,7 @@ def send_telegram_with_id(message):
     }
     response = requests.post(url, json=payload)
     return response.json().get("result", {}).get("message_id")
-
+active_trades = {}
 print("Tye V4.4 TRIPLE PAIR - LIVE")
 print("Pairs: XAU/USD, GBP/USD, GBP/JPY")
 
