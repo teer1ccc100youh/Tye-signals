@@ -87,3 +87,45 @@ while True:
             send_telegram(msg)
 
     time.sleep(900)
+
+# ===== ADDED: SL/TP TRACKER 2026-10-06 =====
+import threading
+active_trades = {}
+
+def send_telegram_with_id(msg):
+    try:
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        data = {"chat_id": CHAT_ID, "text": msg, "parse_mode": "HTML"}
+        r = requests.post(url, data=data, timeout=10)
+        return r.json()['result']['message_id']
+    except Exception as e:
+        print(f"Telegram fail: {e}")
+        return None
+
+def check_trades():
+    global active_trades
+    while True:
+        time.sleep(60) # check every 1 min
+        gold = get_gold()
+        gbp_usd, gbp_jpy = get_forex()
+        prices = {"XAUUSD": gold, "GBPUSD": gbp_usd, "GBPJPY": gbp_jpy}
+
+        for symbol, trade in list(active_trades.items()):
+            price = prices.get(symbol)
+            if not price: continue
+
+            if trade["action"] == "BUY" and price >= trade["tp"]:
+                send_telegram(f"✅ TP HIT on {symbol}! Entry: {trade['entry']}")
+                del active_trades[symbol]
+            elif trade["action"] == "SELL" and price <= trade["tp"]:
+                send_telegram(f"✅ TP HIT on {symbol}! Entry: {trade['entry']}")
+                del active_trades[symbol]
+            elif trade["action"] == "BUY" and price <= trade["sl"]:
+                send_telegram(f"❌ SL HIT on {symbol}! Entry: {trade['entry']}")
+                del active_trades[symbol]
+            elif trade["action"] == "SELL" and price >= trade["sl"]:
+                send_telegram(f"❌ SL HIT on {symbol}! Entry: {trade['entry']}")
+                del active_trades[symbol]
+
+threading.Thread(target=check_trades, daemon=True).start()
+# ===== END ADDED CODE =====
